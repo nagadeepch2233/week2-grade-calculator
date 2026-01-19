@@ -42,18 +42,19 @@ def get_mark(prompt):
 
 def enter_students():
     num_students = get_positive_int("How many students? ")
-
     results = []
 
     for i in range(num_students):
         print(f"\nEntering data for Student {i + 1}")
         name = input("Student name: ")
 
-        marks = []
-        for s in range(1, 4):
-            marks.append(get_mark(f"Enter marks for subject {s}: "))
+        maths = get_mark("Enter Maths marks: ")
+        science = get_mark("Enter Science marks: ")
+        social = get_mark("Enter Social marks: ")
 
-        average = sum(marks) / len(marks)
+        marks = [maths, science, social]
+
+        average = sum(marks) / 3
         grade = determine_grade(average)
         comment = grade_comment(grade)
 
@@ -69,20 +70,20 @@ def enter_students():
 
 def display_results(results):
     print("\n" + "-" * 75)
-    print(f"{'Name':15}{'Sub1':>7}{'Sub2':>7}{'Sub3':>7}{'Avg':>8}{'Grade':>8}  Comment")
+    print(f"{'Name':15}{'Maths':>7}{'Science':>9}{'Social':>9}{'Avg':>8}{'Grade':>8}  Comment")
     print("-" * 75)
 
     averages = []
 
     for r in results:
-        
         averages.append(r["average"])
         print(
             f"{r['name']:15}"
             f"{r['marks'][0]:7.1f}"
-            f"{r['marks'][1]:7.1f}"
-            f"{r['marks'][2]:7.1f}"
+            f"{r['marks'][1]:9.1f}"
+            f"{r['marks'][2]:9.1f}"
             f"{r['average']:8.2f}"
+            f"{r['grade']:>8}  "
             f"{r['comment']}"
         )
 
@@ -91,34 +92,14 @@ def display_results(results):
     print(f"Highest Average: {max(averages):.2f}")
     print(f"Lowest Average: {min(averages):.2f}")
 
-def search_student(results):
-    name = input("Enter student name to search: ").lower()
-    for r in results:
-        if r["name"].lower() == name:
-            print("\nStudent Found:")
-            print(r)
-            return
-    print("Student not found.")
-
-def save_to_file(results):
-    filename = "student_results.txt"
-    with open(filename, "w") as file:
-        for r in results:
-            file.write(
-                f"{r['name']}, Marks: {r['marks']}, "
-                f"Average: {r['average']:.2f}, "
-                f"Grade: {r['grade']}, Comment: {r['comment']}\n"
-            )
-    print(f"Results saved to {filename}")
-
 def menu():
     results = []
-
+    
     while True:
         print("\n--- Student Grade Calculator Menu ---")
         print("1. Enter student data")
         print("2. Display results")
-        print("3.Exit")
+        print("3. Exit")
 
         choice = input("Choose an option (1-3): ")
 
@@ -130,10 +111,8 @@ def menu():
             else:
                 print("No data available.")
         elif choice == "3":
-            if results:
-                search_student(results)
-            else:
-                print("No data available.") 
+            print("Exiting program. Goodbye!")
+            break
         else:
             print("Invalid choice. Try again.")
 
