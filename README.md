@@ -7,5 +7,5 @@ displays results in a formatted table.
 Features
 - Grade calculation
 - Number of students
-- Student search
+  
   
